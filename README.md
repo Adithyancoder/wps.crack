@@ -1,6 +1,10 @@
-# wps.crack
+INSTALL SET UP 
 
-install set up 
+cd wps.crack
 
+chmod +x install.sh
 
+./install.sh 
+
+then type wps.crack 
 
