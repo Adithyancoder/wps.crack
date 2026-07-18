@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 chmod +x oneshot.py
 chmod +x wps.crack.py
