@@ -1,2 +1,6 @@
 # wps.crack
-One shot python automatic
+
+install set up 
+
+
+
