@@ -157,7 +157,7 @@ def select_attack_mode():
 
     
     
-    print(f"{Colors.W}{Colors.BOLD} [1] Pixie Dust      (-K){Colors.W}")
+    print(f"{Colors.W}{Colors.BOLD} [1] Pixie Dust      {Colors.W}")
           
   # print(" ")
     print(" [2] Bruteforce      ")
