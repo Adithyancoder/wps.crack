@@ -4,7 +4,7 @@
 
 
 
-# Colour 
+#__-_-_-_-_-_+_-_-_-_+_+_+_+.  Colour 
 
 class Colors:
     G = '\033[1;32m'   
@@ -16,12 +16,20 @@ class Colors:
     W = '\033[1;37m'   
     N = '\033[0m'
     BOLD = '\033[1m'
-    
+import subprocess
+#import os
+import time
+import re
+import sys
+from pathlib import Path
+import threading
+import random    
 import os
 import sys
 import subprocess
 import re
-
+import threading
+import random
 def clear():
     os.system('clear')
 
@@ -67,11 +75,41 @@ def select_interface():
             print("Invalid input.")
 
 def scan_networks(iface):
+
     clear()
-    print(f"{Colors.Y}{Colors.BOLD}")
-    print(f"\n{Colors.Y}{Colors.BOLD}════════════════════════════════════════════════════════════{Colors.Y}")
-    print(f"          {Colors.Y}{Colors.BOLD} WIFI WPS ATTACK BY ADITHYAN {Colors.Y}")
-    print(f"{Colors.Y}{Colors.BOLD}════════════════════════════════════════════════════════════{Colors.W}\n")
+#def print_banner():
+  #  clear()
+
+    title = "WIFI DEAUTHER BY ADITHYAN"
+    glitch_chars = "!@#$%^&*<>/\\|▓▒░"
+    frames = 8
+    width = 64
+
+    for frame in range(frames):
+        clear()
+        reveal_ratio = frame / (frames - 1)
+        chars_locked = int(len(title) * reveal_ratio)
+
+        display = ""
+        for i, ch in enumerate(title):
+            if ch == " " or i < chars_locked:
+                display += ch
+            else:
+                display += random.choice(glitch_chars)
+
+        print(f"{Colors.C}{Colors.BOLD}")
+        print(f"\n{Colors.C}{Colors.BOLD}{'═' * width}{Colors.N}")
+        print(f"          {Colors.W}{Colors.BOLD}        {display}{Colors.N}")
+        print(f"{Colors.C}{Colors.BOLD}{'═' * width}{Colors.N}\n")
+        sys.stdout.flush()
+        time.sleep(0.06)
+
+    # Final clean frame (locked, no glitch)
+    clear()
+    print(f"{Colors.C}{Colors.BOLD}")
+    print(f"\n{Colors.C}{Colors.BOLD}{'═' * width}{Colors.N}")
+    print(f"          {Colors.W}{Colors.BOLD}        {title}{Colors.N}")
+    print(f"{Colors.C}{Colors.BOLD}{'═' * width}{Colors.N}\n")
     
     print(f"\n[*] SCANNING WI-FI ON {iface} ....")
     
@@ -166,7 +204,7 @@ def select_attack_mode():
     
     print(" [4] Pixel Force     ")
     
-    print(" [5] All Attack       ")
+    print(" [5] All Attack      ")
     
   # print(" ")
     print(" [6] Specific PIN    ")
@@ -189,11 +227,39 @@ def select_attack_mode():
 
        
 def main():
+#def print_banner():
     clear()
-    print(f"{Colors.Y}{Colors.BOLD}")
-    print(f"\n{Colors.Y}{Colors.BOLD}════════════════════════════════════════════════════════════{Colors.Y}")
-    print(f"          {Colors.Y}{Colors.BOLD} WIFI WPS ATTACK BY ADITHYAN {Colors.Y}")
-    print(f"{Colors.Y}{Colors.BOLD}════════════════════════════════════════════════════════════{Colors.W}\n")
+
+    title = "WIFI DEAUTHER BY ADITHYAN"
+    glitch_chars = "!@#$%^&*<>/\\|▓▒░"
+    frames = 8
+    width = 64
+
+    for frame in range(frames):
+        clear()
+        reveal_ratio = frame / (frames - 1)
+        chars_locked = int(len(title) * reveal_ratio)
+
+        display = ""
+        for i, ch in enumerate(title):
+            if ch == " " or i < chars_locked:
+                display += ch
+            else:
+                display += random.choice(glitch_chars)
+
+        print(f"{Colors.C}{Colors.BOLD}")
+        print(f"\n{Colors.C}{Colors.BOLD}{'═' * width}{Colors.N}")
+        print(f"          {Colors.W}{Colors.BOLD}        {display}{Colors.N}")
+        print(f"{Colors.C}{Colors.BOLD}{'═' * width}{Colors.N}\n")
+        sys.stdout.flush()
+        time.sleep(0.06)
+
+    # Final clean frame (locked, no glitch)
+    clear()
+    print(f"{Colors.C}{Colors.BOLD}")
+    print(f"\n{Colors.C}{Colors.BOLD}{'═' * width}{Colors.N}")
+    print(f"          {Colors.W}{Colors.BOLD}        {title}{Colors.N}")
+    print(f"{Colors.C}{Colors.BOLD}{'═' * width}{Colors.N}\n")
       
                   
             
